@@ -6,10 +6,7 @@ import com.study.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class BoardController {
@@ -48,6 +45,26 @@ public class BoardController {
     @GetMapping("/board/delete")
     public String boardDelete(Integer id) {
         boardService.boardDelete(id);
+        return "redirect:/board/list";
+    }
+
+    @GetMapping("/board/modify/{id}")
+    public String boardModify(Model model, @PathVariable("id") Integer id) {
+
+        model.addAttribute("board", boardService.boardView(id));
+
+        return "boardmodify";
+    }
+
+    @PostMapping("/board/update/{id}")
+    public String boardUpdate(@PathVariable("id") Integer id, Board board) {
+
+        Board boardTmp = boardService.boardView(id);
+        boardTmp.setTitle(board.getTitle());
+        boardTmp.setContent(board.getContent());
+
+        boardService.write(boardTmp);
+
         return "redirect:/board/list";
     }
 }
