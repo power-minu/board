@@ -35,6 +35,15 @@
         </table>
 
         <br/>
+
+        <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+            <a th:if="${page != nowPage}" th:href="@{/board/list(page = ${page - 1})}" th:text="${page}"></a>
+            <strong th:if="${page == nowPage}" th:text="${page}" style="color : black"></strong>
+        </th:block>
+
+        <br/>
+        <br/>
+
         <a th:href="@{/board/write}">글 작성</a>
 
     </div>
