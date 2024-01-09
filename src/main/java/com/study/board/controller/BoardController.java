@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class BoardController {
@@ -20,9 +21,9 @@ public class BoardController {
     }
 
     @PostMapping("/board/writepro")
-    public String boardWritePro(Board board, Model model) {
+    public String boardWritePro(Board board, Model model, MultipartFile file) throws Exception{
 
-        boardService.write(board);
+        boardService.write(board, file);
 
         model.addAttribute("message", "글 작성 완료");
         model.addAttribute("searchUrl", "/board/list");
@@ -60,13 +61,13 @@ public class BoardController {
     }
 
     @PostMapping("/board/update/{id}")
-    public String boardUpdate(@PathVariable("id") Integer id, Board board, Model model) {
+    public String boardUpdate(@PathVariable("id") Integer id, Board board, Model model, MultipartFile file) throws Exception{
 
         Board boardTmp = boardService.boardView(id);
         boardTmp.setTitle(board.getTitle());
         boardTmp.setContent(board.getContent());
 
-        boardService.write(boardTmp);
+        boardService.write(boardTmp, file);
 
         model.addAttribute("message", "글 수정 완료");
         model.addAttribute("searchUrl", "/board/list");
