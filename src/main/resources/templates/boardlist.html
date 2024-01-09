@@ -15,6 +15,11 @@
 
 <body>
     <div class="layout">
+        <a th:href="@{/board/list}">홈</a>
+
+        <br/>
+        <br/>
+
         <table>
             <thead>
                 <tr>
@@ -37,11 +42,18 @@
         <br/>
 
         <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
-            <a th:if="${page != nowPage}" th:href="@{/board/list(page = ${page - 1})}" th:text="${page}"></a>
+            <a th:if="${page != nowPage}" th:href="@{/board/list(page = ${page - 1}, searchKeyword = ${param.searchKeyword})}" th:text="${page}"></a>
             <strong th:if="${page == nowPage}" th:text="${page}" style="color : black"></strong>
         </th:block>
 
         <br/>
+        <br/>
+
+        <form th:action="@{/board/list}" method="get">
+            <input type="text" name="searchKeyword">
+            <button type="submit">검색</button>
+        </form>
+
         <br/>
 
         <a th:href="@{/board/write}">글 작성</a>
